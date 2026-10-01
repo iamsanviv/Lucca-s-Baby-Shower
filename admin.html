@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Panel de regalos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    .panel { max-width: 760px; margin: 32px auto; padding: 0 16px; }
+    .panel h1 { color: var(--azul-oscuro); font-weight: 500; text-align: center; margin: 0 0 18px; }
+    .acceso { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .acceso input { font: inherit; padding: 6px 14px; border: 1px solid var(--borde); border-radius: 12px; }
+    .resumen { text-align: center; color: var(--texto-suave); margin: 18px 0; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; }
+    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--azul-pastel); vertical-align: top; }
+    th { background: var(--azul-pastel); color: var(--azul-oscuro); font-weight: 600; }
+    td.sin { color: var(--texto-suave); font-style: italic; }
+    .liberar { font: inherit; font-size: 0.85em; background: none; border: 0; color: #a1414b; text-decoration: underline; cursor: pointer; }
+    #error { color: #a1414b; text-align: center; }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <h1>Regalos de Lucca · Panel</h1>
+    <form class="acceso" id="acceso">
+      <input type="password" id="clave" placeholder="Clave de administración" autocomplete="current-password" required>
+      <button class="btn" type="submit">Ver lista</button>
+    </form>
+    <p id="error" role="alert"></p>
+    <div id="contenido" hidden>
+      <p class="resumen" id="resumen"></p>
+      <table>
+        <thead><tr><th>#</th><th>Regalo</th><th>Quién lo regala</th></tr></thead>
+        <tbody id="tabla"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/regalos.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector(s);
+      let clave = "";
+      try { clave = sessionStorage.getItem("lucca_admin") || ""; } catch (e) {}
+
+      function escapar(t) { const d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+
+      async function cargar() {
+        $("#error").textContent = "";
+        try {
+          const filas = await window.API.adminLista(clave);
+          try { sessionStorage.setItem("lucca_admin", clave); } catch (e) {}
+          const porRegalo = {};
+          filas.forEach((f) => (porRegalo[f.gift_id] = porRegalo[f.gift_id] || []).push(f));
+          $("#resumen").textContent =
+            `${filas.length} elecciones · ${Object.keys(porRegalo).length} de ${window.REGALOS.length} regalos con al menos una persona`;
+          $("#tabla").innerHTML = window.REGALOS.map((r) => {
+            const quienes = porRegalo[r.id] || [];
+            const celda = quienes.length
+              ? quienes.map((q) =>
+                  `${escapar(q.guest_name)} <button class="liberar" data-id="${q.id}" data-nombre="${escapar(q.guest_name)}">liberar</button>`
+                ).join("<br>")
+              : "";
+            const cupo = r.max === null ? "ilimitado" : `máx. ${r.max}`;
+            return `<tr><td>${r.id}</td><td>${escapar(r.nombre)}<br><small>${cupo}</small></td>
+                    <td class="${quienes.length ? "" : "sin"}">${celda || "Nadie aún"}</td></tr>`;
+          }).join("");
+          $("#contenido").hidden = false;
+        } catch (e) {
+          $("#contenido").hidden = true;
+          $("#error").textContent = e.message;
+        }
+      }
+
+      $("#acceso").addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        clave = $("#clave").value;
+        cargar();
+      });
+
+      $("#tabla").addEventListener("click", async (ev) => {
+        const b = ev.target.closest(".liberar");
+        if (!b) return;
+        if (!confirm(`¿Liberar la elección de ${b.dataset.nombre}? El regalo volverá a estar disponible.`)) return;
+        try {
+          await window.API.adminLiberar(clave, b.dataset.id);
+          cargar();
+        } catch (e) {
+          $("#error").textContent = e.message;
+        }
+      });
+
+      if (clave) { $("#clave").value = clave; cargar(); }
+    })();
+  </script>
+</body>
+</html>

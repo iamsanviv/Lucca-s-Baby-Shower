@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regalos para Lucca</title>
+  <meta name="description" content="Lista de regalos del baby shower de Lucca. Elige el tuyo para que no se repita.">
+  <meta property="og:title" content="Ideas de obsequios para Lucca">
+  <meta property="og:description" content="Elige el regalo que llevarás para que no se repita 💙">
+  <meta property="og:image" content="img/deco/encabezado.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="hero">
+    <img src="img/deco/encabezado.jpg" alt="Ideas de obsequios para Lucca">
+  </header>
+
+  <main class="pagina">
+    <p id="aviso-demo" class="aviso-demo" hidden>
+      Modo demostración: las elecciones se guardan solo en este dispositivo.
+    </p>
+
+    <section class="intro">
+      <p class="saludo" id="saludo"></p>
+      <p>
+        Elige el regalo que quieres llevarle a Lucca. Al elegirlo, los regalos únicos
+        quedan apartados para que no se repitan.
+      </p>
+    </section>
+
+    <nav class="filtros" aria-label="Filtrar regalos">
+      <button type="button" class="filtro activo" data-filtro="todos">Todos</button>
+      <button type="button" class="filtro" data-filtro="disponibles">Disponibles</button>
+      <button type="button" class="filtro" data-filtro="mios">Mis regalos</button>
+    </nav>
+
+    <p id="cargando" class="estado-carga">Cargando la lista…</p>
+    <ol id="lista" class="lista" aria-live="polite"></ol>
+
+    <div class="cierre">
+    <img class="elefante" src="img/deco/elefante-izq.jpg" alt="">
+    <section class="nota">
+      <p class="nota-principal">
+        <span aria-hidden="true">♡</span>
+        Si cambias de opinión, puedes cancelar tu elección desde este mismo dispositivo
+        <span aria-hidden="true">💙</span>
+      </p>
+      <p>Cualquier regalo es una bendición para Lucca,<br>lo más importante es tu compañía</p>
+    </section>
+    <img class="elefante" src="img/deco/elefante-der.jpg" alt="">
+    </div>
+  </main>
+
+  <footer class="pie">
+    <img src="img/deco/pie.jpg" alt="">
+  </footer>
+
+  <!-- Diálogo para confirmar el regalo -->
+  <dialog id="dialogo" class="dialogo">
+    <form method="dialog" id="form-reserva">
+      <img id="dlg-img" class="dlg-img" alt="">
+      <h2 id="dlg-titulo"></h2>
+      <p id="dlg-sub" class="dlg-sub"></p>
+      <label for="dlg-nombre">Tu nombre</label>
+      <input id="dlg-nombre" name="nombre" autocomplete="name" maxlength="60" required
+             placeholder="Ej: Tía María">
+      <p id="dlg-error" class="dlg-error" role="alert"></p>
+      <div class="dlg-botones">
+        <button type="button" class="btn btn-sec" id="dlg-cancelar">Volver</button>
+        <button type="submit" class="btn" id="dlg-ok">Confirmar regalo</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/regalos.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
