@@ -46,8 +46,8 @@
       <p class="saludo" id="saludo"></p>
       <p>
         ¡Hola! Soy Lucca. Mientras espero llegar, mis estrellas guardan esta lista
-        con cositas que me van a servir mucho. Elige un regalo y lo apartaré para
-        que no me llegue repetido.
+        con cositas que me van a servir mucho. Elige lo que quieras regalarme;
+        puedes escoger más de una.
       </p>
     </div>
   </header>
@@ -56,26 +56,19 @@
 
   <main class="contenido">
     <h2 class="subtitulo">Mi lista de deseos</h2>
-    <p class="bajada">Elige una estrella y será tu regalo</p>
+    <p class="bajada">Elige lo que quieras regalarme 💙</p>
 
     <nav class="filtros" aria-label="Filtrar regalos">
       <button type="button" class="filtro activo" data-filtro="todos">Todo</button>
-      <button type="button" class="filtro" data-filtro="disponibles">Disponibles</button>
       <button type="button" class="filtro" data-filtro="mios">Lo que me regalas</button>
     </nav>
-
-    <p class="leyenda">
-      <span><i class="punto unico"></i>Regalo único</span>
-      <span><i class="punto cupo"></i>Necesito algunos</span>
-      <span><i class="punto varios"></i>Me sirven muchos</span>
-    </p>
 
     <p id="cargando" class="estado-carga">Cargando mi lista…</p>
     <ol id="lista" class="lista" aria-live="polite"></ol>
 
     <section class="nota">
       <p>
-        Si ya pensaste qué regalarme, apártalo aquí para que no me llegue repetido.
+        Marca aquí lo que me vas a regalar; así sé quién me trae cada cosa.
         Y si cambias de opinión, puedes cancelarlo desde este mismo dispositivo.
       </p>
       <p class="nota-suave">

@@ -70,8 +70,7 @@
                   `${escapar(q.guest_name)} <button class="liberar" data-id="${q.id}" data-nombre="${escapar(q.guest_name)}">liberar</button>`
                 ).join("<br>")
               : "";
-            const cupo = r.max === null ? "ilimitado" : `máx. ${r.max}`;
-            return `<tr><td>${r.id}</td><td>${escapar(r.nombre)}<br><small>${cupo}</small></td>
+            return `<tr><td>${r.id}</td><td>${escapar(r.nombre)}</td>
                     <td class="${quienes.length ? "" : "sin"}">${celda || "Nadie aún"}</td></tr>`;
           }).join("");
           $("#contenido").hidden = false;

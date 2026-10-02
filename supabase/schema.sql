@@ -28,25 +28,25 @@ alter table admin_settings enable row level security;
 
 insert into gifts (id, nombre, max_qty) values
   (1,  'Pañales y pañitos húmedos',   null),
-  (2,  'Set de teteros Avent Natural', 1),
+  (2,  'Set de teteros Avent Natural', null),
   (3,  'Bodys blancos',               null),
-  (4,  'Toalla bebé',                 2),
-  (5,  'Cobijas bebé',                3),
+  (4,  'Toalla bebé', null),
+  (5,  'Cobijas bebé', null),
   (6,  'Pantalones',                  null),
   (7,  'Medias',                      null),
-  (8,  'Carro organizador',           1),
-  (9,  'Bañera con patas',            1),
-  (10, 'Cojín de lactancia',          1),
-  (11, 'Fular',                       1),
-  (12, 'Sonido blanco',               1),
-  (13, 'Nido colecho',                1),
-  (14, 'Kit de aseo',                 1),
-  (15, 'Baby gym',                    1),
-  (16, 'Silla mecedora',              1),
-  (17, 'Aspirador nasal',             1),
-  (18, 'Monitor y cámara',            1),
-  (19, 'Calentador de pañitos',       1),
-  (20, 'Esterilizador de biberones',  1)
+  (8,  'Carro organizador', null),
+  (9,  'Bañera con patas', null),
+  (10, 'Cojín de lactancia', null),
+  (11, 'Fular', null),
+  (12, 'Sonido blanco', null),
+  (13, 'Nido colecho', null),
+  (14, 'Kit de aseo', null),
+  (15, 'Baby gym', null),
+  (16, 'Silla mecedora', null),
+  (17, 'Aspirador nasal', null),
+  (18, 'Monitor y cámara', null),
+  (19, 'Calentador de pañitos', null),
+  (20, 'Esterilizador de biberones', null)
 on conflict (id) do update set nombre = excluded.nombre, max_qty = excluded.max_qty;
 
 -- Clave del panel de administración (cámbiala por una tuya).

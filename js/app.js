@@ -78,40 +78,25 @@
 
   // ---------- render ----------
   function infoRegalo(r) {
-    const e = estado[r.id] || { max_qty: r.max, taken: 0 };
-    const max = e.max_qty;
+    const e = estado[r.id] || { taken: 0 };
     const tomados = e.taken;
     const propios = misReservas(r.id).length;
-    const disponible = max === null || tomados < max;
-    return { max, tomados, propios, disponible };
+    return { tomados, propios };
   }
 
-  function etiqueta(r, i) {
-    if (i.max === null) {
-      if (i.tomados === 0) return "Me sirven muchos";
-      return `Me sirven muchos · ${i.tomados === 1 ? "ya me lo regala 1 persona" : `ya me lo regalan ${i.tomados}`}`;
-    }
-    if (i.max === 1) return "Regalo único";
-    const quedan = Math.max(i.max - i.tomados, 0);
-    return quedan === 0 ? `Ya tengo los ${i.max} que necesito` : `Necesito ${i.max} · faltan ${quedan}`;
-  }
-
-  function tipo(i) {
-    return i.max === null ? "varios" : i.max === 1 ? "unico" : "cupo";
+  function etiqueta(i) {
+    if (i.tomados === 0) return "Aún nadie lo eligió";
+    return i.tomados === 1 ? "Ya lo va a regalar 1 persona" : `Ya lo van a regalar ${i.tomados} personas`;
   }
 
   function render() {
     const items = window.REGALOS.filter((r) => {
-      const i = infoRegalo(r);
-      if (filtro === "disponibles") return i.disponible;
-      if (filtro === "mios") return i.propios > 0;
+      if (filtro === "mios") return misReservas(r.id).length > 0;
       return true;
     });
 
     if (!items.length) {
-      lista.innerHTML = `<li class="vacio">${
-        filtro === "mios" ? "Aún no has elegido nada para mí." : "¡Ya me regalaron todo! Gracias 💙"
-      }</li>`;
+      lista.innerHTML = `<li class="vacio">Aún no has elegido nada para mí.</li>`;
       return;
     }
 
@@ -123,11 +108,8 @@
         if (i.propios > 0) {
           clases.push("mio");
           accion = `<span class="sello">✓ Tú me lo regalas${i.propios > 1 ? ` (×${i.propios})` : ""}</span>
-                    ${i.disponible && i.max !== 1 ? `<button type="button" class="btn-link" data-reservar="${r.id}">Regalarme otro</button>` : ""}
+                    <button type="button" class="btn-link" data-reservar="${r.id}">Regalarme otro</button>
                     <button type="button" class="btn-link" data-cancelar="${r.id}">Cancelar</button>`;
-        } else if (!i.disponible) {
-          clases.push("agotado");
-          accion = `<span class="sello">Alguien ya me lo regala 💙</span>`;
         } else {
           accion = `<button type="button" class="btn" data-reservar="${r.id}">Te lo regalo</button>`;
         }
@@ -137,7 +119,7 @@
             <div class="foto"><img src="${imagen(r.id)}" alt="${escapar(r.nombre)}" width="270" height="250"></div>
             <h3>${escapar(r.nombre)}</h3>
             ${r.detalle ? `<p class="detalle">${escapar(r.detalle)}</p>` : ""}
-            <p class="etiqueta ${tipo(i)}">${etiqueta(r, i)}</p>
+            <p class="etiqueta">${etiqueta(i)}</p>
             ${accion}
           </li>`;
       })
@@ -166,9 +148,7 @@
     regaloActual = window.REGALOS.find((r) => r.id === giftId);
     $("#dlg-img").src = imagen(giftId);
     $("#dlg-titulo").textContent = regaloActual.nombre;
-    $("#dlg-sub").textContent = regaloActual.max === 1
-      ? "Así nadie más lo elegirá y no me llegará repetido."
-      : "Así sabré que tú me lo traes.";
+    $("#dlg-sub").textContent = "Así sabré que tú me lo traes 💙";
     inputNombre.value = nombre;
     errorDlg.textContent = "";
     btnOk.disabled = false;
