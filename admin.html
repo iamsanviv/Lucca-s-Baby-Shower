@@ -7,20 +7,23 @@
   <title>Lucca's Baby Shower · Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
   <style>
-    .panel { max-width: 760px; margin: 32px auto; padding: 0 16px; }
-    .panel h1 { color: var(--azul-oscuro); font-weight: 500; text-align: center; margin: 0 0 18px; }
+    .panel { position: relative; z-index: 1; max-width: 760px; margin: 40px auto; padding: 0 16px; }
+    .panel h1 { margin: 0 0 18px; text-align: center; font-family: var(--display); font-style: italic; font-weight: 500; font-size: 2rem; color: #e8efff; }
     .acceso { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .acceso input { font: inherit; padding: 6px 14px; border: 1px solid var(--borde); border-radius: 12px; }
+    .acceso input { font: inherit; padding: 10px 14px; border: 1px solid var(--borde); border-radius: 12px; background: rgba(255,255,255,.08); color: #fff; }
+    .acceso .btn { margin-top: 0; }
     .resumen { text-align: center; color: var(--texto-suave); margin: 18px 0; }
-    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; }
-    th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--azul-pastel); vertical-align: top; }
-    th { background: var(--azul-pastel); color: var(--azul-oscuro); font-weight: 600; }
+    .tabla-envoltura { overflow-x: auto; border: 1px solid var(--borde); border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; background: var(--vidrio); }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--borde); vertical-align: top; }
+    th { background: var(--noche-3); color: var(--luz); font-weight: 800; }
+    td small { color: var(--texto-suave); }
     td.sin { color: var(--texto-suave); font-style: italic; }
-    .liberar { font: inherit; font-size: 0.85em; background: none; border: 0; color: #a1414b; text-decoration: underline; cursor: pointer; }
-    #error { color: #a1414b; text-align: center; }
+    .liberar { font: inherit; font-size: 0.85em; background: none; border: 0; color: var(--rojo); text-decoration: underline; cursor: pointer; }
+    #error { color: var(--rojo); text-align: center; }
   </style>
 </head>
 <body>
@@ -33,10 +36,10 @@
     <p id="error" role="alert"></p>
     <div id="contenido" hidden>
       <p class="resumen" id="resumen"></p>
-      <table>
+      <div class="tabla-envoltura"><table>
         <thead><tr><th>#</th><th>Regalo</th><th>Quién lo regala</th></tr></thead>
         <tbody id="tabla"></tbody>
-      </table>
+      </table></div>
     </div>
   </main>
 
@@ -59,7 +62,7 @@
           const porRegalo = {};
           filas.forEach((f) => (porRegalo[f.gift_id] = porRegalo[f.gift_id] || []).push(f));
           $("#resumen").textContent =
-            `${filas.length} elecciones · ${Object.keys(porRegalo).length} de ${window.REGALOS.length} regalos con al menos una persona`;
+            `${filas.length} ${filas.length === 1 ? "elección" : "elecciones"} · ${Object.keys(porRegalo).length} de ${window.REGALOS.length} regalos elegidos`;
           $("#tabla").innerHTML = window.REGALOS.map((r) => {
             const quienes = porRegalo[r.id] || [];
             const celda = quienes.length

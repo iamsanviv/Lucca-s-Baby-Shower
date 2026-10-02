@@ -7,52 +7,56 @@
   <meta name="description" content="¡Hola! Soy Lucca. Aquí está mi lista de regalos: elige el tuyo para que no me llegue repetido.">
   <meta property="og:title" content="Lucca's Baby Shower">
   <meta property="og:description" content="¡Hola! Soy Lucca 💙 Elige mi regalo aquí para que no me llegue repetido.">
-  <meta name="theme-color" content="#fbfaf5">
-  <link rel="icon" href="img/ilustraciones/mono.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0e1b3d">
+  <link rel="icon" href="img/ilustraciones/estrella.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-  <!-- Escena ilustrada (decorativa) -->
-  <div class="escena" aria-hidden="true">
-    <img class="deco arbol arbol-izq" src="img/ilustraciones/acacia.svg" alt="">
-    <img class="deco elefante-escena" src="img/ilustraciones/elefante.svg" alt="">
-    <img class="deco arbol arbol-der" src="img/ilustraciones/acacia.svg" alt="">
-    <img class="deco jirafa" src="img/ilustraciones/jirafa.svg" alt="">
-    <img class="deco globo globo-1" src="img/ilustraciones/globo.svg" alt="">
-    <img class="deco globo globo-2" src="img/ilustraciones/globo.svg" alt="">
-    <img class="deco globo globo-3" src="img/ilustraciones/globo.svg" alt="">
+  <!-- Cielo nocturno (decorativo) -->
+  <div class="cielo" id="cielo" aria-hidden="true">
+    <span class="fugaz" style="--top: 8%; --delay: 0s;"></span>
+    <span class="fugaz" style="--top: 46%; --delay: 4.5s;"></span>
   </div>
 
-  <main class="arco">
-    <img class="mono" src="img/ilustraciones/mono.svg" alt="" aria-hidden="true">
+  <header class="hero">
+    <div class="luna" aria-hidden="true"></div>
+    <div class="movil" aria-hidden="true">
+      <span class="hilo"></span>
+      <svg viewBox="0 0 24 24" width="34" height="34"><path d="M12 2l2.6 6.3L21 9l-5 4.3L17.6 20 12 16.6 6.4 20 8 13.3 3 9l6.4-.7Z"/></svg>
+    </div>
+    <div class="movil movil-2" aria-hidden="true">
+      <span class="hilo"></span>
+      <svg viewBox="0 0 24 24" width="24" height="24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </div>
 
-    <header class="titulo">
-      <p class="antetitulo">Bienvenidos a mi</p>
-      <h1>
-        <span class="nombre">Lucca's</span>
-        <span class="evento">Baby Shower</span>
-      </h1>
-    </header>
+    <p class="antetitulo entra">Bienvenidos a mi</p>
+    <h1>
+      <span class="nombre entra"><span class="destello">Lucca's</span></span>
+      <span class="evento entra">Baby Shower</span>
+    </h1>
 
     <p id="aviso-demo" class="aviso-demo" hidden>
       Modo demostración: las elecciones se guardan solo en este dispositivo.
     </p>
 
-    <section class="intro">
+    <div class="intro entra">
       <p class="saludo" id="saludo"></p>
       <p>
-        Soy Lucca y muy pronto llegaré a conocerte. Aquí te dejo algunas ideas de
-        cositas que me van a servir mucho. Si quieres regalarme algo, elígelo aquí
-        para que no me llegue repetido.
+        ¡Hola! Soy Lucca. Mientras espero llegar, mis estrellas guardan esta lista
+        con cositas que me van a servir mucho. Elige un regalo y lo apartaré para
+        que no me llegue repetido.
       </p>
-    </section>
+    </div>
+  </header>
 
-    <div class="ornamento" aria-hidden="true"><span>✦</span></div>
+  <div class="horizonte" aria-hidden="true"></div>
 
+  <main class="contenido">
     <h2 class="subtitulo">Mi lista de deseos</h2>
+    <p class="bajada">Elige una estrella y será tu regalo</p>
 
     <nav class="filtros" aria-label="Filtrar regalos">
       <button type="button" class="filtro activo" data-filtro="todos">Todo</button>
@@ -70,23 +74,17 @@
     <ol id="lista" class="lista" aria-live="polite"></ol>
 
     <section class="nota">
-      <p class="nota-principal">
+      <p>
         Si ya pensaste qué regalarme, apártalo aquí para que no me llegue repetido.
         Y si cambias de opinión, puedes cancelarlo desde este mismo dispositivo.
       </p>
-      <p>
+      <p class="nota-suave">
         Cualquier regalo es una bendición para mí,
         pero lo más importante es que me acompañes.
       </p>
       <p class="firma">Con amor, Lucca</p>
     </section>
   </main>
-
-  <footer class="pie" aria-hidden="true">
-    <img class="pie-elefante pie-elefante-izq" src="img/ilustraciones/elefante.svg" alt="">
-    <img class="pie-elefante pie-elefante-der" src="img/ilustraciones/elefante.svg" alt="">
-    <img class="follaje" src="img/ilustraciones/follaje.svg" alt="">
-  </footer>
 
   <!-- Diálogo para confirmar el regalo -->
   <dialog id="dialogo" class="dialogo">
@@ -108,6 +106,7 @@
 
   <div id="toast" class="toast" role="status" hidden></div>
 
+  <script src="js/cielo.js"></script>
   <script src="js/config.js"></script>
   <script src="js/regalos.js"></script>
   <script src="js/api.js"></script>
