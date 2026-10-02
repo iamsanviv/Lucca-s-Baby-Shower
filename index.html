@@ -3,23 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Regalos para Lucca</title>
-  <meta name="description" content="Lista de regalos del baby shower de Lucca. Elige el tuyo para que no se repita.">
-  <meta property="og:title" content="Ideas de obsequios para Lucca">
-  <meta property="og:description" content="Elige el regalo que llevarás para que no se repita 💙">
-  <meta property="og:image" content="img/deco/encabezado.jpg">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💙</text></svg>">
+  <title>Lucca's Baby Shower</title>
+  <meta name="description" content="¡Hola! Soy Lucca. Aquí está mi lista de regalos: elige el tuyo para que no me llegue repetido.">
+  <meta property="og:title" content="Lucca's Baby Shower">
+  <meta property="og:description" content="¡Hola! Soy Lucca 💙 Elige mi regalo aquí para que no me llegue repetido.">
+  <meta name="theme-color" content="#fbfaf5">
+  <link rel="icon" href="img/ilustraciones/mono.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-  <header class="hero">
-    <img src="img/deco/encabezado.jpg" alt="Ideas de obsequios para Lucca">
-  </header>
+  <!-- Escena ilustrada (decorativa) -->
+  <div class="escena" aria-hidden="true">
+    <img class="deco arbol arbol-izq" src="img/ilustraciones/acacia.svg" alt="">
+    <img class="deco elefante-escena" src="img/ilustraciones/elefante.svg" alt="">
+    <img class="deco arbol arbol-der" src="img/ilustraciones/acacia.svg" alt="">
+    <img class="deco jirafa" src="img/ilustraciones/jirafa.svg" alt="">
+    <img class="deco globo globo-1" src="img/ilustraciones/globo.svg" alt="">
+    <img class="deco globo globo-2" src="img/ilustraciones/globo.svg" alt="">
+    <img class="deco globo globo-3" src="img/ilustraciones/globo.svg" alt="">
+  </div>
 
-  <main class="pagina">
+  <main class="arco">
+    <img class="mono" src="img/ilustraciones/mono.svg" alt="" aria-hidden="true">
+
+    <header class="titulo">
+      <p class="antetitulo">Bienvenidos a mi</p>
+      <h1>
+        <span class="nombre">Lucca's</span>
+        <span class="evento">Baby Shower</span>
+      </h1>
+    </header>
+
     <p id="aviso-demo" class="aviso-demo" hidden>
       Modo demostración: las elecciones se guardan solo en este dispositivo.
     </p>
@@ -27,51 +44,64 @@
     <section class="intro">
       <p class="saludo" id="saludo"></p>
       <p>
-        Elige el regalo que quieres llevarle a Lucca. Al elegirlo, los regalos únicos
-        quedan apartados para que no se repitan.
+        Soy Lucca y muy pronto llegaré a conocerte. Aquí te dejo algunas ideas de
+        cositas que me van a servir mucho. Si quieres regalarme algo, elígelo aquí
+        para que no me llegue repetido.
       </p>
     </section>
+
+    <div class="ornamento" aria-hidden="true"><span>✦</span></div>
+
+    <h2 class="subtitulo">Mi lista de deseos</h2>
 
     <nav class="filtros" aria-label="Filtrar regalos">
-      <button type="button" class="filtro activo" data-filtro="todos">Todos</button>
+      <button type="button" class="filtro activo" data-filtro="todos">Todo</button>
       <button type="button" class="filtro" data-filtro="disponibles">Disponibles</button>
-      <button type="button" class="filtro" data-filtro="mios">Mis regalos</button>
+      <button type="button" class="filtro" data-filtro="mios">Lo que me regalas</button>
     </nav>
 
-    <p id="cargando" class="estado-carga">Cargando la lista…</p>
+    <p class="leyenda">
+      <span><i class="punto unico"></i>Regalo único</span>
+      <span><i class="punto cupo"></i>Necesito algunos</span>
+      <span><i class="punto varios"></i>Me sirven muchos</span>
+    </p>
+
+    <p id="cargando" class="estado-carga">Cargando mi lista…</p>
     <ol id="lista" class="lista" aria-live="polite"></ol>
 
-    <div class="cierre">
-    <img class="elefante" src="img/deco/elefante-izq.jpg" alt="">
     <section class="nota">
       <p class="nota-principal">
-        <span aria-hidden="true">♡</span>
-        Si cambias de opinión, puedes cancelar tu elección desde este mismo dispositivo
-        <span aria-hidden="true">💙</span>
+        Si ya pensaste qué regalarme, apártalo aquí para que no me llegue repetido.
+        Y si cambias de opinión, puedes cancelarlo desde este mismo dispositivo.
       </p>
-      <p>Cualquier regalo es una bendición para Lucca,<br>lo más importante es tu compañía</p>
+      <p>
+        Cualquier regalo es una bendición para mí,
+        pero lo más importante es que me acompañes.
+      </p>
+      <p class="firma">Con amor, Lucca</p>
     </section>
-    <img class="elefante" src="img/deco/elefante-der.jpg" alt="">
-    </div>
   </main>
 
-  <footer class="pie">
-    <img src="img/deco/pie.jpg" alt="">
+  <footer class="pie" aria-hidden="true">
+    <img class="pie-elefante pie-elefante-izq" src="img/ilustraciones/elefante.svg" alt="">
+    <img class="pie-elefante pie-elefante-der" src="img/ilustraciones/elefante.svg" alt="">
+    <img class="follaje" src="img/ilustraciones/follaje.svg" alt="">
   </footer>
 
   <!-- Diálogo para confirmar el regalo -->
   <dialog id="dialogo" class="dialogo">
     <form method="dialog" id="form-reserva">
-      <img id="dlg-img" class="dlg-img" alt="">
+      <div class="dlg-foto"><img id="dlg-img" alt=""></div>
+      <p class="dlg-ante">¿Me regalas…?</p>
       <h2 id="dlg-titulo"></h2>
       <p id="dlg-sub" class="dlg-sub"></p>
-      <label for="dlg-nombre">Tu nombre</label>
+      <label for="dlg-nombre">¿Cómo te llamas?</label>
       <input id="dlg-nombre" name="nombre" autocomplete="name" maxlength="60" required
              placeholder="Ej: Tía María">
       <p id="dlg-error" class="dlg-error" role="alert"></p>
       <div class="dlg-botones">
         <button type="button" class="btn btn-sec" id="dlg-cancelar">Volver</button>
-        <button type="submit" class="btn" id="dlg-ok">Confirmar regalo</button>
+        <button type="submit" class="btn" id="dlg-ok">¡Sí, te lo regalo!</button>
       </div>
     </form>
   </dialog>

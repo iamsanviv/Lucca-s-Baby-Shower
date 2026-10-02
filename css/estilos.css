@@ -1,155 +1,277 @@
+/* Lucca's Baby Shower — estilo toile azul: grabado a línea sobre papel crema */
+
 :root {
-  --papel: #fcfcfc;
-  --tarjeta: #ffffff;
-  --azul-oscuro: #33497f;
-  --azul: #5d7cb5;
-  --azul-claro: #a9c2e6;
-  --azul-pastel: #e4ecf8;
-  --borde: #d3e0f2;
-  --texto: #3a4660;
-  --texto-suave: #6b7891;
-  --ok: #5d7cb5;
-  --radio: 18px;
-  --sombra: 0 2px 10px rgba(51, 73, 127, 0.07);
+  --papel: #fbfaf5;
+  --tarjeta: #fffefb;
+  --tinta: #2f4c8a;        /* azul toile */
+  --tinta-fuerte: #22396c;
+  --azul: #5f80bf;
+  --azul-claro: #c5d6f0;
+  --azul-pastel: #eaf0fa;
+  --linea: #cddbf0;
+  --texto: #34405a;
+  --texto-suave: #66738e;
+  --rojo: #a1414b;
+
+  --serif: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  --script: "Pinyon Script", "Snell Roundhand", cursive;
+
+  --radio: 20px;
+  --arco-x: min(50vw, 560px);
+  --arco-y: 300px;
   color-scheme: light;
 }
 
 * { box-sizing: border-box; }
-
-html, body { margin: 0; }
-
-body {
-  background: var(--papel);
-  color: var(--texto);
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  font-size: 19px;
-  line-height: 1.45;
-  -webkit-font-smoothing: antialiased;
-}
-
+html, body { margin: 0; overflow-x: clip; }
 img { max-width: 100%; display: block; }
 
-/* ---------- encabezado y pie con la ilustración original ---------- */
-.hero, .pie {
-  display: flex;
-  justify-content: center;
+body {
+  min-height: 100vh;
+  background-color: var(--papel);
+  background-image: url("../img/ilustraciones/patron.svg");
+  color: var(--texto);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ================= escena ilustrada ================= */
+.escena {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 560px;
   overflow: hidden;
+  pointer-events: none;
+  z-index: 2; /* las ilustraciones enmarcan las esquinas del arco, como en la invitación */
 }
-.hero img, .pie img {
-  width: 100%;
-  max-width: 900px;
-  height: auto;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-          mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+.deco { position: absolute; height: auto; }
+
+.arbol { width: clamp(150px, 21vw, 300px); top: 40px; }
+.arbol-izq { left: max(-40px, calc(50% - 760px)); }
+.arbol-der { right: max(-50px, calc(50% - 780px)); transform: scaleX(-1); top: 70px; }
+
+.elefante-escena {
+  width: clamp(130px, 15vw, 210px);
+  left: max(40px, calc(50% - 640px));
+  top: 300px;
+  transform: scaleX(-1);
 }
-.pie { margin-top: 0; }
-.pie img {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 35%),
-                      linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-  -webkit-mask-composite: source-in;
-          mask-image: linear-gradient(to bottom, transparent 0, #000 35%),
-                      linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-          mask-composite: intersect;
+.jirafa {
+  width: clamp(110px, 12vw, 170px);
+  right: max(30px, calc(50% - 650px));
+  top: 150px;
+  transform: scaleX(-1);
 }
 
-.pagina {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 16px;
+.globo { width: 54px; animation: flotar 7s ease-in-out infinite; }
+.globo-1 { left: calc(50% - 330px); top: 24px; }
+.globo-2 { right: calc(50% - 340px); top: 10px; width: 62px; animation-delay: -2.5s; }
+.globo-3 { right: calc(50% - 470px); top: 120px; width: 36px; animation-delay: -4.5s; opacity: 0.8; }
+
+@keyframes flotar {
+  0%, 100% { translate: 0 0; rotate: -2deg; }
+  50%      { translate: 0 -12px; rotate: 2deg; }
 }
 
-/* ---------- textos ---------- */
+/* ================= el arco (tarjeta principal) ================= */
+.arco {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 150px auto 0;
+  padding: 110px clamp(16px, 4vw, 56px) 48px;
+  background: var(--tarjeta);
+  border: 1.5px solid var(--azul-claro);
+  border-radius: var(--arco-x) var(--arco-x) 28px 28px / var(--arco-y) var(--arco-y) 28px 28px;
+  /* segunda línea interior, como el marco de la invitación */
+  box-shadow:
+    inset 0 0 0 7px var(--tarjeta),
+    inset 0 0 0 8px var(--linea),
+    0 30px 60px -30px rgba(47, 76, 138, 0.25);
+}
+
+.mono {
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  width: clamp(150px, 22vw, 210px);
+  translate: -50% 0;
+  filter: drop-shadow(0 6px 8px rgba(47, 76, 138, 0.18));
+  animation: aparecer 0.9s ease-out both;
+}
+
+/* ================= título ================= */
+.titulo { text-align: center; }
+.antetitulo {
+  margin: 0;
+  font-size: 0.82em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--azul);
+  animation: aparecer 0.8s 0.1s ease-out both;
+}
+h1 {
+  margin: 0;
+  line-height: 0.9;
+  font-weight: 500;
+  color: var(--tinta);
+}
+h1 .nombre {
+  display: block;
+  font-size: clamp(3.6rem, 12vw, 7.2rem);
+  letter-spacing: 0.01em;
+  animation: aparecer 0.9s 0.2s ease-out both;
+}
+h1 .evento {
+  display: block;
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 6.5vw, 3.8rem);
+  color: var(--azul);
+  margin-top: 0.08em;
+  animation: aparecer 0.9s 0.35s ease-out both;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ================= textos ================= */
 .intro {
   text-align: center;
-  max-width: 560px;
-  margin: 4px auto 18px;
+  max-width: 600px;
+  margin: 22px auto 0;
   color: var(--texto-suave);
+  font-size: 1.08em;
+  animation: aparecer 0.9s 0.5s ease-out both;
 }
 .intro p { margin: 0 0 6px; }
-.saludo {
-  color: var(--azul-oscuro);
-  font-size: 1.2em;
-  font-weight: 500;
-}
+.saludo { color: var(--tinta); font-size: 1.15em; font-weight: 500; }
+.saludo:empty { display: none; }
 .saludo button {
   font: inherit;
-  font-size: 0.8em;
+  font-size: 0.75em;
   color: var(--azul);
   background: none;
   border: 0;
   text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
   padding: 0 4px;
 }
 
 .aviso-demo {
-  background: #fff7e6;
-  border: 1px solid #f0d9a8;
+  background: #fff8ea;
+  border: 1px dashed #e6cf9e;
   color: #7a5b1f;
   border-radius: 12px;
-  padding: 8px 14px;
+  padding: 6px 14px;
   text-align: center;
-  font-size: 0.9em;
-  margin: 8px auto 16px;
-  max-width: 560px;
+  font-size: 0.85em;
+  margin: 18px auto 0;
+  max-width: 520px;
 }
 
-/* ---------- filtros ---------- */
+.ornamento {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 340px;
+  margin: 30px auto 14px;
+  color: var(--azul-claro);
+}
+.ornamento::before, .ornamento::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to var(--dir, right), transparent, var(--azul-claro));
+}
+.ornamento::after { --dir: left; }
+
+.subtitulo {
+  text-align: center;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  color: var(--tinta);
+  margin: 0 0 16px;
+}
+
+/* ================= filtros y leyenda ================= */
 .filtros {
   display: flex;
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 22px;
 }
 .filtro {
   font: inherit;
   font-size: 0.95em;
-  color: var(--azul-oscuro);
+  color: var(--tinta);
   background: var(--tarjeta);
-  border: 1px solid var(--borde);
+  border: 1px solid var(--linea);
   border-radius: 999px;
-  padding: 4px 18px;
+  padding: 3px 18px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .filtro:hover { background: var(--azul-pastel); }
-.filtro.activo {
-  background: var(--azul-oscuro);
-  border-color: var(--azul-oscuro);
-  color: #fff;
-}
+.filtro.activo { background: var(--tinta); border-color: var(--tinta); color: #fff; }
 
-.estado-carga {
-  text-align: center;
+.leyenda {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 14px 0 26px;
+  font-size: 0.85em;
   color: var(--texto-suave);
-  font-style: italic;
 }
+.leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+.punto { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.punto.unico  { background: var(--tinta); }
+.punto.cupo   { background: var(--azul); }
+.punto.varios { background: var(--azul-claro); border: 1px solid var(--azul); }
 
-/* ---------- tarjetas ---------- */
+.estado-carga { text-align: center; color: var(--texto-suave); font-style: italic; }
+
+/* ================= tarjetas de regalo ================= */
 .lista {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .regalo {
   position: relative;
-  background: var(--tarjeta);
-  border: 1px solid var(--borde);
+  background: #fff;
+  border: 1px solid var(--linea);
   border-radius: var(--radio);
-  box-shadow: var(--sombra);
-  padding: 14px 14px 16px;
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px var(--azul-pastel);
+  padding: 16px 14px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s;
 }
-.regalo:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(51, 73, 127, 0.12); }
+.lista.entrada .regalo {
+  animation: aparecer 0.6s ease-out both;
+  animation-delay: calc(var(--i, 0) * 40ms + 0.3s);
+}
+.regalo:hover {
+  transform: translateY(-4px) rotate(-0.4deg);
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px var(--azul-pastel),
+              0 14px 26px -14px rgba(47, 76, 138, 0.35);
+}
 
 .numero {
   position: absolute;
@@ -159,71 +281,82 @@ img { max-width: 100%; display: block; }
   height: 34px;
   border-radius: 50%;
   background: var(--azul-pastel);
-  border: 1px solid var(--borde);
-  color: var(--azul-oscuro);
+  border: 1px solid var(--linea);
+  color: var(--tinta);
   display: grid;
   place-items: center;
   font-size: 1.05em;
-  font-weight: 500;
+  font-weight: 600;
   z-index: 1;
 }
 
 .foto {
   width: 100%;
-  aspect-ratio: 1 / 0.92;
+  aspect-ratio: 1 / 0.9;
   display: grid;
   place-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .foto img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   mix-blend-mode: multiply;
-  border-radius: 10px;
 }
 
 .regalo h3 {
   margin: 0;
-  font-size: 1.15em;
-  font-weight: 500;
-  color: var(--azul-oscuro);
-  line-height: 1.2;
+  font-size: 1.18em;
+  font-weight: 600;
+  color: var(--tinta);
+  line-height: 1.15;
 }
-.detalle {
-  margin: 2px 0 0;
-  font-size: 0.92em;
-  color: var(--texto-suave);
-}
+.detalle { margin: 2px 0 0; font-size: 0.9em; color: var(--texto-suave); font-style: italic; }
 
 .etiqueta {
-  margin: 10px 0 10px;
-  font-size: 0.85em;
-  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 12px;
+  font-size: 0.82em;
+  letter-spacing: 0.03em;
   color: var(--azul);
   min-height: 1.3em;
 }
+.etiqueta::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+.etiqueta.unico  { color: var(--tinta); }
+.etiqueta.cupo   { color: var(--azul); }
+.etiqueta.varios { color: var(--azul); }
+.etiqueta.varios::before { background: var(--azul-claro); border: 1px solid var(--azul); }
 
+/* ================= botones ================= */
 .btn {
   font: inherit;
   font-size: 1em;
-  font-weight: 500;
-  border: 1px solid var(--azul-oscuro);
-  background: var(--azul-oscuro);
+  font-weight: 600;
+  border: 1px solid var(--tinta);
+  background: var(--tinta);
   color: #fff;
   border-radius: 999px;
-  padding: 6px 20px;
+  padding: 5px 20px;
   cursor: pointer;
   margin-top: auto;
-  transition: background 0.15s, transform 0.1s;
+  transition: background 0.2s, transform 0.1s;
 }
-.btn:hover { background: #2a3d6c; }
+.btn:hover { background: var(--tinta-fuerte); }
 .btn:active { transform: scale(0.97); }
 .btn:disabled { opacity: 0.55; cursor: default; }
-.btn-sec {
-  background: var(--tarjeta);
-  color: var(--azul-oscuro);
+.btn:focus-visible, .filtro:focus-visible, .btn-link:focus-visible {
+  outline: 2px solid var(--azul);
+  outline-offset: 2px;
 }
+.btn-sec { background: #fff; color: var(--tinta); }
 .btn-sec:hover { background: var(--azul-pastel); }
 
 .btn-link {
@@ -233,29 +366,24 @@ img { max-width: 100%; display: block; }
   border: 0;
   color: var(--texto-suave);
   text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 4px;
+  padding: 2px;
 }
 
 /* elegido por otra persona */
-.regalo.agotado { opacity: 0.6; }
-.regalo.agotado .foto img { filter: grayscale(0.5); }
-.regalo.agotado .sello {
-  margin-top: auto;
-  color: var(--texto-suave);
-  font-style: italic;
-}
+.regalo.agotado { opacity: 0.55; }
+.regalo.agotado .foto img { filter: grayscale(0.6); }
+.regalo.agotado .sello { margin-top: auto; color: var(--texto-suave); font-style: italic; }
 
 /* elegido por mí */
 .regalo.mio {
-  border: 2px solid var(--azul-claro);
-  background: linear-gradient(#fff, #f4f8fe);
+  border-color: var(--azul-claro);
+  background: linear-gradient(#fff, #f3f7fd);
+  box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px var(--azul-claro);
 }
-.regalo.mio .sello {
-  margin-top: auto;
-  color: var(--azul-oscuro);
-  font-weight: 600;
-}
+.regalo.mio .sello { margin-top: auto; color: var(--tinta); font-weight: 600; }
 
 .vacio {
   grid-column: 1 / -1;
@@ -265,104 +393,144 @@ img { max-width: 100%; display: block; }
   padding: 24px 0;
 }
 
-/* ---------- nota final (como en la tarjeta) ---------- */
-.cierre {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 36px;
-}
-.cierre .elefante { width: 150px; flex: none; mix-blend-mode: multiply; }
+/* ================= nota final ================= */
 .nota {
-  margin: 0 0 24px;
-  max-width: 560px;
-  border: 1px solid var(--borde);
-  border-radius: 22px;
-  background: var(--tarjeta);
-  padding: 18px 22px;
+  margin: 44px auto 0;
+  max-width: 600px;
+  border: 1px solid var(--linea);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 6px var(--azul-pastel);
+  padding: 22px 26px 12px;
   text-align: center;
   color: var(--texto-suave);
 }
 .nota p { margin: 4px 0; }
-.nota-principal { color: var(--azul-oscuro); font-size: 1.08em; }
+.nota-principal { color: var(--tinta); font-size: 1.06em; margin-bottom: 10px !important; }
+.firma {
+  font-family: var(--script);
+  font-size: 2.1em;
+  color: var(--azul);
+  margin-top: 8px !important;
+  line-height: 1.4;
+}
 
-/* ---------- diálogo ---------- */
+/* ================= pie con follaje ================= */
+.pie {
+  position: relative;
+  height: 210px;
+  margin-top: -40px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+.follaje {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;
+}
+.pie-elefante {
+  position: absolute;
+  bottom: 30px;
+  width: clamp(120px, 16vw, 210px);
+}
+.pie-elefante-izq { left: max(8px, calc(50% - 680px)); transform: scaleX(-1); }
+.pie-elefante-der { right: max(8px, calc(50% - 680px)); }
+
+/* ================= diálogo ================= */
 .dialogo {
-  border: 1px solid var(--borde);
-  border-radius: 24px;
-  padding: 24px 22px 20px;
-  width: min(380px, calc(100vw - 32px));
+  border: 1px solid var(--linea);
+  border-radius: 26px;
+  padding: 22px 22px 20px;
+  width: min(390px, calc(100vw - 32px));
   background: var(--tarjeta);
   color: var(--texto);
-  box-shadow: 0 20px 50px rgba(51, 73, 127, 0.25);
+  box-shadow: inset 0 0 0 6px var(--tarjeta), inset 0 0 0 7px var(--azul-pastel),
+              0 24px 60px rgba(47, 76, 138, 0.3);
   text-align: center;
 }
-.dialogo::backdrop { background: rgba(51, 73, 127, 0.28); backdrop-filter: blur(2px); }
-.dlg-img {
-  max-height: 140px;
-  width: auto;
-  margin: 0 auto 8px;
-  mix-blend-mode: multiply;
-}
-.dialogo h2 {
-  margin: 0;
-  font-weight: 500;
-  color: var(--azul-oscuro);
-  font-size: 1.5em;
-  line-height: 1.15;
-}
-.dlg-sub { margin: 4px 0 14px; color: var(--texto-suave); font-size: 0.95em; }
-.dialogo label {
-  display: block;
-  text-align: left;
-  font-size: 0.9em;
-  color: var(--texto-suave);
-  margin-bottom: 4px;
-}
+.dialogo[open] { animation: aparecer 0.3s ease-out; }
+.dialogo::backdrop { background: rgba(47, 76, 138, 0.3); backdrop-filter: blur(3px); }
+.dlg-foto { height: 140px; display: grid; place-items: center; margin-bottom: 6px; }
+.dlg-foto img { height: 140px; width: auto; max-width: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.dlg-ante { margin: 0; font-family: var(--script); font-size: 1.7em; color: var(--azul); line-height: 1.2; }
+.dialogo h2 { margin: 0; font-weight: 600; color: var(--tinta); font-size: 1.5em; line-height: 1.15; }
+.dlg-sub { margin: 6px 0 14px; color: var(--texto-suave); font-size: 0.95em; }
+.dialogo label { display: block; text-align: left; font-size: 0.9em; color: var(--texto-suave); margin-bottom: 4px; }
 .dialogo input {
   width: 100%;
   font: inherit;
   font-size: 1.05em;
   padding: 8px 14px;
-  border: 1px solid var(--borde);
+  border: 1px solid var(--linea);
   border-radius: 12px;
   color: var(--texto);
   background: #fff;
 }
 .dialogo input:focus { outline: 2px solid var(--azul-claro); border-color: var(--azul-claro); }
-.dlg-error { color: #a1414b; min-height: 1.3em; margin: 6px 0 4px; font-size: 0.92em; }
-.dlg-botones { display: flex; gap: 10px; justify-content: center; }
+.dlg-error { color: var(--rojo); min-height: 1.3em; margin: 6px 0 4px; font-size: 0.92em; }
+.dlg-botones { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .dlg-botones .btn { margin-top: 0; }
 
-/* ---------- aviso flotante ---------- */
+/* ================= aviso flotante ================= */
 .toast {
   position: fixed;
   left: 50%;
   bottom: 20px;
   transform: translateX(-50%);
-  background: var(--azul-oscuro);
+  background: var(--tinta);
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 999px;
-  box-shadow: var(--sombra);
+  box-shadow: 0 10px 30px -10px rgba(47, 76, 138, 0.6);
   z-index: 10;
+  width: max-content;
   max-width: calc(100vw - 32px);
   text-align: center;
+  animation: aparecer 0.3s ease-out;
 }
 
-@media (max-width: 720px) {
-  .cierre .elefante { display: none; }
+/* ================= responsive ================= */
+@media (max-width: 900px) {
+  :root { --arco-y: 220px; }
+  .elefante-escena, .globo-3 { display: none; }
+  .jirafa { right: -10px; top: 170px; width: 110px; }
+  .arbol-izq { left: -60px; }
+  .arbol-der { right: -70px; }
+  .globo-1 { left: 22%; }
+  .globo-2 { right: 18%; }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
+  :root { --arco-y: 150px; }
   body { font-size: 17px; }
-  .lista { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .regalo { padding: 10px 10px 12px; }
-  .numero { width: 28px; height: 28px; font-size: 0.95em; top: 8px; left: 8px; }
-  .btn { padding: 5px 14px; }
+  .escena { height: 340px; }
+  .arbol { width: 150px; top: 10px; }
+  .arbol-izq { left: -70px; }
+  .arbol-der { right: -78px; top: 30px; }
+  .jirafa { display: none; }
+  .globo { width: 38px; }
+  .globo-1 { left: 16%; top: 14px; }
+  .globo-2 { right: 14%; top: 6px; width: 44px; }
+  .arco { margin: 110px 10px 0; padding: 84px 14px 32px; }
+  .mono { top: -44px; }
+  .intro { margin-top: 16px; }
+  .lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .regalo { padding: 12px 8px 14px; }
+  .regalo h3 { font-size: 1.05em; }
+  .numero { width: 28px; height: 28px; font-size: 0.9em; top: 7px; left: 7px; }
+  .btn { padding: 4px 14px; font-size: 0.95em; }
+  .pie { height: 150px; margin-top: -30px; }
+  .follaje { height: 100px; }
+  .pie-elefante { width: 105px; bottom: 22px; }
+}
+
+@media (max-width: 340px) {
+  .lista { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

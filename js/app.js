@@ -65,14 +65,14 @@
   function pintarSaludo() {
     const s = $("#saludo");
     if (nombre) {
-      s.innerHTML = `Hola, ${escapar(nombre)} 💙 <button type="button" id="cambiar-nombre">(no soy yo)</button>`;
+      s.innerHTML = `¡Hola, ${escapar(nombre)}! 💙 <button type="button" id="cambiar-nombre">(no soy yo)</button>`;
       $("#cambiar-nombre").onclick = () => {
         nombre = "";
         guardar(CLAVE_NOMBRE, "");
         pintarSaludo();
       };
     } else {
-      s.textContent = "¡Gracias por acompañarnos! 💙";
+      s.textContent = "";
     }
   }
 
@@ -88,12 +88,16 @@
 
   function etiqueta(r, i) {
     if (i.max === null) {
-      if (i.tomados === 0) return "Se puede repetir";
-      return `Se puede repetir · ${i.tomados} ${i.tomados === 1 ? "persona lo eligió" : "personas lo eligieron"}`;
+      if (i.tomados === 0) return "Me sirven muchos";
+      return `Me sirven muchos · ${i.tomados === 1 ? "ya me lo regala 1 persona" : `ya me lo regalan ${i.tomados}`}`;
     }
     if (i.max === 1) return "Regalo único";
     const quedan = Math.max(i.max - i.tomados, 0);
-    return quedan === 0 ? `Completo (${i.max} de ${i.max})` : `Quedan ${quedan} de ${i.max}`;
+    return quedan === 0 ? `Ya tengo los ${i.max} que necesito` : `Necesito ${i.max} · faltan ${quedan}`;
+  }
+
+  function tipo(i) {
+    return i.max === null ? "varios" : i.max === 1 ? "unico" : "cupo";
   }
 
   function render() {
@@ -106,34 +110,34 @@
 
     if (!items.length) {
       lista.innerHTML = `<li class="vacio">${
-        filtro === "mios" ? "Aún no has elegido ningún regalo." : "No hay regalos disponibles en este momento."
+        filtro === "mios" ? "Aún no has elegido nada para mí." : "¡Ya me regalaron todo! Gracias 💙"
       }</li>`;
       return;
     }
 
     lista.innerHTML = items
-      .map((r) => {
+      .map((r, idx) => {
         const i = infoRegalo(r);
         const clases = ["regalo"];
         let accion;
         if (i.propios > 0) {
           clases.push("mio");
-          accion = `<span class="sello">✓ Tú lo regalas${i.propios > 1 ? ` (×${i.propios})` : ""}</span>
-                    ${i.disponible && i.max !== 1 ? `<button type="button" class="btn-link" data-reservar="${r.id}">Regalar otro</button>` : ""}
-                    <button type="button" class="btn-link" data-cancelar="${r.id}">Cancelar mi elección</button>`;
+          accion = `<span class="sello">✓ Tú me lo regalas${i.propios > 1 ? ` (×${i.propios})` : ""}</span>
+                    ${i.disponible && i.max !== 1 ? `<button type="button" class="btn-link" data-reservar="${r.id}">Regalarme otro</button>` : ""}
+                    <button type="button" class="btn-link" data-cancelar="${r.id}">Cancelar</button>`;
         } else if (!i.disponible) {
           clases.push("agotado");
-          accion = `<span class="sello">Ya fue elegido 💙</span>`;
+          accion = `<span class="sello">Alguien ya me lo regala 💙</span>`;
         } else {
-          accion = `<button type="button" class="btn" data-reservar="${r.id}">Yo lo regalo</button>`;
+          accion = `<button type="button" class="btn" data-reservar="${r.id}">Te lo regalo</button>`;
         }
         return `
-          <li class="${clases.join(" ")}">
+          <li class="${clases.join(" ")}" style="--i:${idx}">
             <span class="numero">${r.id}</span>
             <div class="foto"><img src="${imagen(r.id)}" alt="${escapar(r.nombre)}" width="270" height="250"></div>
             <h3>${escapar(r.nombre)}</h3>
             ${r.detalle ? `<p class="detalle">${escapar(r.detalle)}</p>` : ""}
-            <p class="etiqueta">${etiqueta(r, i)}</p>
+            <p class="etiqueta ${tipo(i)}">${etiqueta(r, i)}</p>
             ${accion}
           </li>`;
       })
@@ -147,6 +151,11 @@
       filas.forEach((f) => (estado[f.gift_id] = { max_qty: f.max_qty, taken: f.taken }));
       $("#cargando").hidden = true;
       render();
+      if (!lista.dataset.listo) {
+        lista.dataset.listo = "1";
+        lista.classList.add("entrada");
+        setTimeout(() => lista.classList.remove("entrada"), 2000);
+      }
     } catch (e) {
       $("#cargando").textContent = e.message;
     }
@@ -158,12 +167,12 @@
     $("#dlg-img").src = imagen(giftId);
     $("#dlg-titulo").textContent = regaloActual.nombre;
     $("#dlg-sub").textContent = regaloActual.max === 1
-      ? "Al confirmar, este regalo quedará apartado a tu nombre."
-      : "Al confirmar, quedará registrado que tú lo llevas.";
+      ? "Así nadie más lo elegirá y no me llegará repetido."
+      : "Así sabré que tú me lo traes.";
     inputNombre.value = nombre;
     errorDlg.textContent = "";
     btnOk.disabled = false;
-    btnOk.textContent = "Confirmar regalo";
+    btnOk.textContent = "¡Sí, te lo regalo!";
     dialogo.showModal();
     if (!nombre) inputNombre.focus();
   }
@@ -172,7 +181,7 @@
     ev.preventDefault();
     const n = inputNombre.value.trim();
     if (n.length < 2) {
-      errorDlg.textContent = "Escribe tu nombre para saber quién lo regala.";
+      errorDlg.textContent = "Escribe tu nombre para saber quién me lo regala.";
       return;
     }
     btnOk.disabled = true;
@@ -185,12 +194,12 @@
       guardar(CLAVE_MIOS, mios);
       dialogo.close();
       pintarSaludo();
-      aviso(`¡Gracias, ${nombre}! Apartaste: ${regaloActual.nombre} 💙`);
+      aviso(`¡Gracias, ${nombre}! Me encantará: ${regaloActual.nombre} 💙`);
       await cargar();
     } catch (e) {
       errorDlg.textContent = e.message;
       btnOk.disabled = false;
-      btnOk.textContent = "Confirmar regalo";
+      btnOk.textContent = "¡Sí, te lo regalo!";
       cargar();
     }
   });
@@ -202,12 +211,12 @@
     const regalo = window.REGALOS.find((r) => r.id === giftId);
     const propia = misReservas(giftId).pop();
     if (!propia) return;
-    if (!confirm(`¿Quieres cancelar tu elección de "${regalo.nombre}"?`)) return;
+    if (!confirm(`¿Ya no me regalarás "${regalo.nombre}"?`)) return;
     try {
       await window.API.cancelar(propia.id, propia.token);
       mios = mios.filter((m) => m.id !== propia.id);
       guardar(CLAVE_MIOS, mios);
-      aviso("Listo, tu elección fue cancelada.");
+      aviso("Listo, lo quité de tu lista.");
       await cargar();
     } catch (e) {
       aviso(e.message);

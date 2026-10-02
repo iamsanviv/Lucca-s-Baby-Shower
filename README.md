@@ -1,4 +1,4 @@
-# Regalos para Lucca 💙
+# Lucca's Baby Shower 💙
 
 Sitio de la lista de regalos del baby shower. Cada invitado elige qué regalará y
 los regalos únicos quedan apartados para que no se repitan.
