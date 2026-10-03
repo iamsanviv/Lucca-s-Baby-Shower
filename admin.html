@@ -67,7 +67,7 @@
             const quienes = porRegalo[r.id] || [];
             const celda = quienes.length
               ? quienes.map((q) =>
-                  `${escapar(q.guest_name)} <button class="liberar" data-id="${q.id}" data-nombre="${escapar(q.guest_name)}">liberar</button>`
+                  `${escapar(q.guest_name)}${q.nota ? ` <em>— ${escapar(q.nota)}</em>` : ""} <button class="liberar" data-id="${q.id}" data-nombre="${escapar(q.guest_name)}">liberar</button>`
                 ).join("<br>")
               : "";
             return `<tr><td>${r.id}</td><td>${escapar(r.nombre)}</td>

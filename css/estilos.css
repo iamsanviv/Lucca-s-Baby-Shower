@@ -518,3 +518,28 @@ h1 .evento {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ================= regalo personalizado ================= */
+.regalo.personal {
+  border-style: dashed;
+  border-color: var(--brillo);
+  background: linear-gradient(180deg, rgba(143,182,255,0.1), var(--vidrio));
+}
+.regalo.personal .foto { background: #fff; }
+.foto .icono-regalo {
+  width: auto;
+  height: 78%;
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 4px 8px rgba(47,76,138,0.18));
+}
+.mi-nota {
+  display: block;
+  margin: 2px 0 8px;
+  font-style: italic;
+  font-size: 0.9em;
+  color: var(--texto-suave);
+}
+
+/* campo de nota en el diálogo */
+#dlg-nota-campo { margin-top: 12px; }
+#dlg-nota-campo .opc { font-weight: 400; color: var(--texto-suave); }

@@ -104,19 +104,27 @@
       .map((r, idx) => {
         const i = infoRegalo(r);
         const clases = ["regalo"];
+        if (r.personalizado) clases.push("personal");
+        const foto = r.personalizado
+          ? `<div class="foto"><img class="icono-regalo" src="img/ilustraciones/regalo.svg" alt=""></div>`
+          : `<div class="foto"><img src="${imagen(r.id)}" alt="${escapar(r.nombre)}" width="270" height="250"></div>`;
         let accion;
         if (i.propios > 0) {
           clases.push("mio");
+          const notas = misReservas(r.id).map((m) => m.nota).filter(Boolean);
+          const notaTxt = notas.length
+            ? `<span class="mi-nota">“${escapar(notas.join(" · "))}”</span>` : "";
           accion = `<span class="sello">✓ Tú me lo regalas${i.propios > 1 ? ` (×${i.propios})` : ""}</span>
+                    ${notaTxt}
                     <button type="button" class="btn-link" data-reservar="${r.id}">Regalarme otro</button>
                     <button type="button" class="btn-link" data-cancelar="${r.id}">Cancelar</button>`;
         } else {
-          accion = `<button type="button" class="btn" data-reservar="${r.id}">Te lo regalo</button>`;
+          accion = `<button type="button" class="btn" data-reservar="${r.id}">${r.personalizado ? "Regalar algo mío" : "Te lo regalo"}</button>`;
         }
         return `
           <li class="${clases.join(" ")}" style="--i:${idx}">
             <span class="numero">${r.id}</span>
-            <div class="foto"><img src="${imagen(r.id)}" alt="${escapar(r.nombre)}" width="270" height="250"></div>
+            ${foto}
             <h3>${escapar(r.nombre)}</h3>
             ${r.detalle ? `<p class="detalle">${escapar(r.detalle)}</p>` : ""}
             <p class="etiqueta">${etiqueta(i)}</p>
@@ -146,9 +154,17 @@
   // ---------- reservar ----------
   function abrirDialogo(giftId) {
     regaloActual = window.REGALOS.find((r) => r.id === giftId);
-    $("#dlg-img").src = imagen(giftId);
+    $("#dlg-img").src = regaloActual.personalizado ? "img/ilustraciones/regalo.svg" : imagen(giftId);
     $("#dlg-titulo").textContent = regaloActual.nombre;
-    $("#dlg-sub").textContent = "Así sabré que tú me lo traes 💙";
+    const campoNota = $("#dlg-nota-campo");
+    if (regaloActual.personalizado) {
+      $("#dlg-sub").textContent = "Cuéntame qué me vas a regalar (opcional); lo veré en mi lista.";
+      $("#dlg-nota").value = "";
+      campoNota.hidden = false;
+    } else {
+      $("#dlg-sub").textContent = "Así sabré que tú me lo traes 💙";
+      campoNota.hidden = true;
+    }
     inputNombre.value = nombre;
     errorDlg.textContent = "";
     btnOk.disabled = false;
@@ -167,10 +183,11 @@
     btnOk.disabled = true;
     btnOk.textContent = "Guardando…";
     try {
-      const res = await window.API.reservar(regaloActual.id, n);
+      const nota = regaloActual.personalizado ? $("#dlg-nota").value.trim() : "";
+      const res = await window.API.reservar(regaloActual.id, n, nota);
       nombre = n;
       guardar(CLAVE_NOMBRE, nombre);
-      mios.push({ id: res.reservation_id, token: res.token, gift_id: regaloActual.id });
+      mios.push({ id: res.reservation_id, token: res.token, gift_id: regaloActual.id, nota: nota || null });
       guardar(CLAVE_MIOS, mios);
       dialogo.close();
       pintarSaludo();

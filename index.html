@@ -89,6 +89,11 @@
       <label for="dlg-nombre">¿Cómo te llamas?</label>
       <input id="dlg-nombre" name="nombre" autocomplete="name" maxlength="60" required
              placeholder="Ej: Tía María">
+      <div id="dlg-nota-campo" hidden>
+        <label for="dlg-nota">¿Qué me vas a regalar? <span class="opc">(opcional)</span></label>
+        <input id="dlg-nota" name="nota" maxlength="200"
+               placeholder="Ej: una cobija tejida a mano">
+      </div>
       <p id="dlg-error" class="dlg-error" role="alert"></p>
       <div class="dlg-botones">
         <button type="button" class="btn btn-sec" id="dlg-cancelar">Volver</button>

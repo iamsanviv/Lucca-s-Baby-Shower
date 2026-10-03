@@ -22,4 +22,5 @@ window.REGALOS = [
   { id: 18, nombre: "Monitor y cámara",           detalle: "",                          max: null },
   { id: 19, nombre: "Calentador de pañitos",      detalle: "",                          max: null },
   { id: 20, nombre: "Esterilizador de biberones", detalle: "",                          max: null },
+  { id: 21, nombre: "Regalo personalizado",       detalle: "Tú eliges qué darme 💙",     max: null, personalizado: true },
 ];

@@ -64,14 +64,15 @@
         taken: lista.filter((x) => x.gift_id === r.id).length,
       }));
     },
-    async reservar(giftId, nombre) {
+    async reservar(giftId, nombre, nota) {
       const n = (nombre || "").trim();
       if (n.length < 2 || n.length > 60) throw new Error(MENSAJES.NOMBRE_INVALIDO);
-      const regalo = window.REGALOS.find((r) => r.id === giftId);
       const lista = demoLeer();
-      const tomados = lista.filter((x) => x.gift_id === giftId).length;
-      if (regalo.max !== null && tomados >= regalo.max) throw new Error(MENSAJES.AGOTADO);
-      const fila = { id: uuid(), token: uuid(), gift_id: giftId, guest_name: n, created_at: new Date().toISOString() };
+      const fila = {
+        id: uuid(), token: uuid(), gift_id: giftId, guest_name: n,
+        nota: (nota || "").trim().slice(0, 200) || null,
+        created_at: new Date().toISOString(),
+      };
       lista.push(fila);
       demoGuardar(lista);
       return { reservation_id: fila.id, token: fila.token };
@@ -96,8 +97,11 @@
 
   const remoto = {
     estado: () => rpc("gift_status"),
-    async reservar(giftId, nombre) {
-      const filas = await rpc("reserve_gift", { p_gift_id: giftId, p_name: nombre });
+    async reservar(giftId, nombre, nota) {
+      const args = { p_gift_id: giftId, p_name: nombre };
+      const n = (nota || "").trim();
+      if (n) args.p_nota = n;  // solo se envía cuando hay nota (regalo personalizado)
+      const filas = await rpc("reserve_gift", args);
       return filas[0];
     },
     cancelar: (id, token) => rpc("cancel_reservation", { p_id: id, p_token: token }),
